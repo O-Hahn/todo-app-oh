@@ -1,0 +1,63 @@
+kind: DeploymentConfig
+apiVersion: apps.openshift.io/v1
+metadata:
+  annotations:
+    app.openshift.io/route-disabled: 'false'
+    openshift.io/generated-by: OpenShiftWebConsole
+  name: todo-app
+  namespace: todo-app
+  labels:
+    app: todo-app
+    app.kubernetes.io/component: todo-app
+    app.kubernetes.io/instance: todo-app
+    app.kubernetes.io/name: todo-app
+    app.kubernetes.io/part-of: todo-app
+    app.openshift.io/runtime: 3scale
+    app.openshift.io/runtime-namespace: todo-app
+    app.openshift.io/runtime-version: todo-app
+spec:
+  strategy:
+    type: Rolling
+    rollingParams:
+      updatePeriodSeconds: 1
+      intervalSeconds: 1
+      timeoutSeconds: 600
+      maxUnavailable: 25%
+      maxSurge: 25%
+    resources: {}
+    activeDeadlineSeconds: 21600
+  triggers:
+    - type: ImageChange
+      imageChangeParams:
+        automatic: true
+        containerNames:
+          - todo-app
+        from:
+          kind: ImageStreamTag
+          namespace: todo-app
+          name: 'todo-app:latest'
+    - type: ConfigChange
+  replicas: 1
+  revisionHistoryLimit: 10
+  test: false
+  selector:
+    app: todo-app
+    deploymentconfig: todo-app
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: todo-app
+        deploymentconfig: todo-app
+    spec:
+      containers:
+        - name: todo-app
+          ports:
+            - containerPort: 8080
+              protocol: TCP
+          resources: {}
+      restartPolicy: Always
+      terminationGracePeriodSeconds: 30
+      dnsPolicy: ClusterFirst
+      securityContext: {}
+      schedulerName: default-scheduler

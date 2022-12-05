@@ -75,3 +75,12 @@ npm update --force
  
 ornpm update --legacy-peer-deps
 ```
+
+# Manuel OpenShift deployment
+`oc new-project todo-app`
+`oc apply -f openshift/1.1-image-stream.yaml`
+`oc apply -f openshift/1.2-build-config.yaml`
+`oc apply -f openshift/1.3-deployment-config.yaml`
+`oc apply -f openshift/1.4-service.yaml`
+`oc apply -f openshift/1.5-route.yaml`
+`oc start-build todo-app`
