@@ -39,13 +39,10 @@ ENV NEXT_TELEMETRY_DISABLED 1
 
 # You only need to copy next.config.js if you are NOT using the default configuration
 # COPY --from=builder /app/next.config.js ./
-COPY --from=builder --chown=1001:1001 /app/public ./public
-COPY --from=builder --chown=1001:1001 /app/public/static ./public/static
 COPY --from=builder --chown=1001:1001 /app/node_modules ./node_modules
 COPY --from=builder --chown=1001:1001 /app/package.json ./package.json
-
 COPY --from=builder --chown=1001:1001 /app/.next ./.next
-COPY --from=builder --chown=1001:1001 /app/.next/standalone ./
+# COPY --from=builder --chown=1001:1001 /app/.next/standalone ./
 COPY --from=builder --chown=1001:1001 /app/.next/static ./.next/static
 
 USER 1001:1001
